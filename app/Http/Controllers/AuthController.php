@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     public function showRegister(){
         return view('auth.register',[
-            'title' => __('common.register'),
+            'title' => 'Đăng ký tài khoản',
         ]);
     }
 
