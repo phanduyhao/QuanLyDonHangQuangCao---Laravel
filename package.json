@@ -1,0 +1,34 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "private": true,
+    "type": "module",   
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "run": "php artisan serve",
+        "Create Storage image": "php artisan storage:link",
+        "makeController": "php artisan make:controller ProductController ",
+        "makeController Full Class": "php artisan make:controller RoleController --resource",
+        "makeModel-Controller-Migration": "php artisan make:model Order -mcr",
+        "RunPHPCommand": " php artisan tinker ",
+        "CreatePass": "echo bcrypt('12345')",
+        "CreateMigration": "php artisan make:migration setting",
+        "makeMigration": "php artisan migrate",
+        "CreateSeeder": " php artisan make:seeder ProductSeeder    ",
+        "RunSeeder": "php artisan db:seed --class=ProductSeeder",
+        "makeOnlyMigration": "php artisan migrate --path=database/migrations/2024_10_12_112459_create_settings_table.php",
+        "makeFormRequest": "php artisan make:request Menu/CreateFormRequest",
+        "list": "php artisan route:list",
+        "storage": "php artisan storage:link",
+        "Package do mat khau": "php artisan make:middleware ThrottleLogins",
+        "Install Toast": "npm install toastr --save"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "axios": "^1.8.2",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.2.4"
+    }
+}
