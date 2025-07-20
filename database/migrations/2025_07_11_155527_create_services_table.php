@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
+            $table->string('image',255)->nullable();
             $table->string('service_name')->unique();
             $table->text('description')->nullable();
             $table->decimal('price', 15, 2);

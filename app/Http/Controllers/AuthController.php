@@ -32,26 +32,20 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'username' => 'required|unique:users,username',
             'phone' => 'required|unique:users,phone',
             'password' => 'required|min:6',
             'confirmPassword' => 'required|same:password',
-            // 'quoctich' => 'required',
-
         ], [
             'name.required' => 'Vui lòng nhập tên của bạn!',
             'email.required' => 'Vui lòng nhập email!',
             'email.email' => 'Email không hợp lệ!',
             'email.unique' => 'Email đã tồn tại!',
-            'username.required' => 'Vui lòng nhập username!',
-            'username.unique' => 'Username đã tồn tại!',
             'phone.required' => 'Vui lòng nhập số điện thoại!',
             'phone.unique' => 'Số điện thoại đã tồn tại!',
             'password.required' => 'Vui lòng nhập mật khẩu!',
             'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự!',
             'confirmPassword.required' => 'Vui lòng xác nhận mật khẩu!',
             'confirmPassword.same' => 'Mật khẩu xác nhận không khớp!',
-            // 'quoctich.required' => 'Vui lòng chọn Quốc tịch!',
 
         ]);
         $confirmPass = $request->confirmPassword;
@@ -64,14 +58,8 @@ class AuthController extends Controller
                 $user = new User;
                 $user->name = $request->name;
                 $user->email = $request->email;
-                $user->username = $request->username;
                 $user->phone = $request->phone;
                 $user->password = bcrypt($request->password);
-                $user->role = $request->role;
-                $user->language = $request->language ?? 'vn';
-                $user->link_zalo = $request->zalo;
-                $user->link_tele = $request->telegram;
-                $user->quoctich = $request->quoctich;
                 $user->save();
                 Auth::login($user);
             } else {
@@ -95,45 +83,45 @@ class AuthController extends Controller
      * @param Request $request
      */
    
-public function login(Request $request)
-{
-    // Validate trường login và password
-    $this->validate($request, [
-        'login' => 'required|string',
-        'password' => 'required|string',
-    ], [
-        'login.required' => 'Vui lòng nhập số điện thoại hoặc tên đăng nhập',
-        'password.required' => 'Vui lòng nhập mật khẩu',
-    ]);
+    public function login(Request $request)
+    {
+        // Validate trường login và password
+        $this->validate($request, [
+            'login' => 'required|string',
+            'password' => 'required|string',
+        ], [
+            'login.required' => 'Vui lòng nhập email',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+        ]);
 
-    $login = $request->input('login');
-  $password = $request->input('password');
+        $login = $request->input('login');
+    $password = $request->input('password');
 
-    // Xác định kiểu login: email, số điện thoại hay username
-    if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-        $fieldType = 'email';
-    } elseif (preg_match('/^[0-9]{9,15}$/', $login)) {
-        $fieldType = 'phone'; // Số điện thoại
-    } else {
-        $fieldType = 'username'; // Mặc định là username
+        // Xác định kiểu login: email, số điện thoại hay username
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $fieldType = 'email';
+        } elseif (preg_match('/^[0-9]{9,15}$/', $login)) {
+            $fieldType = 'phone'; // Số điện thoại
+        } else {
+            $fieldType = 'username'; // Mặc định là username
+        }
+
+        // Dữ liệu cần kiểm tra
+        $credentials = [
+            $fieldType => $login,
+            'password' => $password
+        ];
+
+        // Tiến hành đăng nhập
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
+        }
+
+        // Nếu thất bại
+        return back()->withErrors([
+            'login' => 'Số điện thoại hoặc tên đăng nhập hoặc mật khẩu không đúng',
+        ])->withInput($request->only('login'));
     }
-
-    // Dữ liệu cần kiểm tra
-    $credentials = [
-        $fieldType => $login,
-        'password' => $password
-    ];
-
-    // Tiến hành đăng nhập
-    if (Auth::attempt($credentials)) {
-        return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
-    }
-
-    // Nếu thất bại
-    return back()->withErrors([
-        'login' => 'Số điện thoại hoặc tên đăng nhập hoặc mật khẩu không đúng',
-    ])->withInput($request->only('login'));
-}
 
 
      public function showForgotPass(){

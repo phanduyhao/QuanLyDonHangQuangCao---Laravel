@@ -446,4 +446,11 @@ input[type="number"]::-webkit-outer-spin-button {
   color: #666564;
   font-size: 11px; }
 
+  .card.h-100 {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card.h-100:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
 /*# sourceMappingURL=main.css.map */

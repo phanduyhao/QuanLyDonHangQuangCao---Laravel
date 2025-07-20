@@ -41,9 +41,11 @@
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
         <!-- Menu -->
- <div class="layout-page ps-0">
+        @include('layout.sidebar')
+        {{-- Nếu chưa đăng nhập, có thể include layout guest nếu cần --}}
+ <div class="layout-page">
           <!-- Navbar -->
-    @include('layout.head')
+    @include('layout.headAdmin')
 
         
 
@@ -51,7 +53,6 @@
             @yield('contents')
 
           <!-- Content wrapper -->
-          @include('layout.foot')
         </div>
 
     <!-- Overlay -->

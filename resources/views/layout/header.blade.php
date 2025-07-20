@@ -1,4 +1,4 @@
-<link rel="icon" type="image/x-icon" href="/temp/images/general/favicon.png" />
+<link rel="icon" type="image/x-icon" href="/temp/images/logo.png" />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,8 +42,18 @@
 
 <!-- CSS của jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet" />
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>AOS.init();</script>
 
 <style>
+    .card.h-100 {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card.h-100:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
     .image-container {
         position: relative;
         display: inline-block;

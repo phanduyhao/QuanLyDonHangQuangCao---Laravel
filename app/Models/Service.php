@@ -12,20 +12,19 @@ class Service extends Model
     protected $fillable = [
         'service_name',
         'description',
-        'price',
-        'unit',
+        'image',
+        // 'pricing_model',
+        // 'package_price',
+        // 'package_duration_days',
+        // 'impressions_per_day',
         'status',
     ];
 
-    protected $casts = [
-        'status' => 'string',
-    ];
-
     /**
-     * Dịch vụ này có nhiều chi tiết đơn hàng.
+     * Mỗi dịch vụ có thể có nhiều bảng giá.
      */
-    public function OrderDetails()
+    public function pricings()
     {
-        return $this->hasMany(OrderDetail::class, 'service_id', 'id');
+    return $this->hasMany(ServicePricing::class, 'service_id');
     }
 }
