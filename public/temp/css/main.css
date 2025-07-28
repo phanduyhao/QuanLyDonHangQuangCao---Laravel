@@ -453,4 +453,16 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
+
+#heroBanner img {
+    height: 500px;
+    object-fit: cover;
+}
+
+
+@media (max-width: 768px) {
+    #heroBanner img {
+        height: 250px;
+    }
+}
 /*# sourceMappingURL=main.css.map */

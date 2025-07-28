@@ -17,6 +17,34 @@
             border: 2px solid #c5c5c5 !important;
         }
     </style>
+    
+  <div id="heroBanner" class="container carousel slide mt-3" data-bs-ride="carousel">
+      <div class="carousel-inner">
+          <div class="carousel-item active">
+              <img src="/images/banner/banner1.jpg" class="d-block w-100 img-banner" alt="Banner 1">
+          </div>
+          <div class="carousel-item">
+              <img src="/images/banner/banner2.jpg" class="d-block w-100 img-banner" alt="Banner 2">
+          </div>
+          <div class="carousel-item">
+              <img src="/images/banner/banner3.jpg" class="d-block w-100 img-banner" alt="Banner 3">
+          </div>
+          <div class="carousel-item">
+              <img src="/images/banner/banner4.png" class="d-block w-100 img-banner" alt="Banner 4">
+          </div>
+      </div>
+
+      <!-- Điều hướng trái/phải -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroBanner" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+          <span class="visually-hidden">Trước</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroBanner" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+          <span class="visually-hidden">Tiếp</span>
+      </button>
+  </div>
+
     <div class="content-wrapper py-4 px-3 rounded">
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
@@ -64,7 +92,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="orderForm" method="POST" action="">
+                    <form id="orderForm" method="POST" action="{{ route('orders.store') }}">
                         @csrf
 
                         <!-- Ẩn ID của dịch vụ được chọn -->
@@ -106,6 +134,7 @@
                                     <input type="date" class="form-control" id="endDate" name="end_date" required>
                                 </div>
                             </div>
+<input type="hidden" name="reach_total" id="reachTotal">
                         </div>
 
                     </form>
@@ -193,8 +222,10 @@
                     document.getElementById('summaryPrice').textContent = priceStr;
                     document.getElementById('totalReach').textContent = (reachPerDay * duration).toLocaleString(
                         'vi-VN');
+                    document.getElementById('reachTotal').value = (reachPerDay * duration).toLocaleString(
+                        'vi-VN');
                     document.getElementById('summaryDateRange').textContent = startDate + ' - ' + endDateInput
-                    .value;
+                        .value;
                 } else {
                     // Gói tùy chọn ngày
                     if (startDate && endDate) {
@@ -207,6 +238,8 @@
                             document.getElementById('summaryDuration').textContent = days;
                             document.getElementById('summaryPrice').textContent = total.toLocaleString('vi-VN');
                             document.getElementById('totalReach').textContent = (reachPerDay * days).toLocaleString(
+                                'vi-VN');
+                            document.getElementById('reachTotal').value = (reachPerDay * days).toLocaleString(
                                 'vi-VN');
                             document.getElementById('summaryDateRange').textContent = startDate + ' - ' + endDate;
                         } else {

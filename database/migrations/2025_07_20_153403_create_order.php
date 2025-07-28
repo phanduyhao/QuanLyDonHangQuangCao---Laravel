@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->unsignedInteger('number_of_days');
             $table->decimal('total_amount', 15, 2);
+            $table->string('reach_total', 255)->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('rejection_reason')->nullable();
             $table->timestamps();

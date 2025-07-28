@@ -58,12 +58,4 @@ class User extends Authenticatable
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
-    /**
-     * Lấy tất cả thông báo của người dùng.
-     */
-    public function Notifications()
-    {
-        return $this->hasMany(Notification::class, 'user_id', 'id');
-    }
-
 }

@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+    const STATUS_PENDING = 0;
+    const STATUS_OK = 1;
+    const STATUS_CANCEL = 2;
+    const PAYMENT_FAILED = 3;
+    const PAYMENT_STATUS_PENDING = null;
 
     protected $fillable = [
         'order_code',
@@ -18,7 +23,7 @@ class Order extends Model
         'start_date',
         'end_date',
         'number_of_days',
-        'total_reach',
+        'reach_total',
         'total_amount',
         'status',
         'payment_status',

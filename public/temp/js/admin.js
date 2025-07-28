@@ -57,10 +57,10 @@ function updateFileInput(formID) {
 
 // Thêm xóa active giữa các mục Sidebar
 $(document).ready(function () {
-    var currentPath = window.location.href;
+    var currentPath = window.location.pathname; // <-- chỉ lấy phần path, bỏ query
     $('.menu-item a').each(function () {
-        var menuItemPath = $(this).attr('href');
-        if (menuItemPath == currentPath) {
+        var menuItemPath = $(this).prop('pathname'); // <-- dùng pathname thay vì href
+        if (menuItemPath === currentPath) {
             $('.menu-item').removeClass('active');
             $('.menu-item.open').removeClass('active open');
             $(this).closest('.menu-item').addClass('active');
@@ -71,6 +71,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 // tạo Alias tự động
 $(document).ready(function () {
