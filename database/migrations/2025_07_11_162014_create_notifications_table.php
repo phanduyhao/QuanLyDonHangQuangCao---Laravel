@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('order_id')->nullable()->constrained();
             $table->enum('notification_type', ['order_approved', 'order_rejected', 'system_update']);
             $table->text('message');
-            $table->boolean('is_read')->default(false);
+            $table->boolean('isRead')->default(false);
             $table->boolean('sent_email')->default(false);
             $table->timestamps();
         });

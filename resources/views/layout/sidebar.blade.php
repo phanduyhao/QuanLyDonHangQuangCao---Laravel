@@ -76,6 +76,15 @@
                  </li>
              </ul>
          </li>
-
+         <li class="menu-header small text-uppercase">
+             <span class="menu-header-text">Liên hệ & Hỗ trợ</span>
+         </li>
+         <li class="menu-item">
+             <a href="{{ route('admin.contacts.index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bxs-message-rounded-detail"></i>
+                 <div>Quản lý liên hệ</div>
+                 <p class="badge bg-danger mb-0 ms-2">{{ $count_contact }}</p>
+             </a>
+         </li>
      </ul>
  </aside>

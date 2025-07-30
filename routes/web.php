@@ -10,12 +10,13 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Admin\HomeAdminController;
 use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 
 
-Route::get( '/', [HomeController::class, 'home'])->name(name: 'home');
+Route::get('/', [HomeController::class, 'home'])->name(name: 'home');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
 Route::get('/showRegister', [AuthController::class, 'showRegister'])->name('showRegister');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -30,11 +31,12 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 Route::get('/api/services/{id}', [HomeController::class, 'showService']);
 Route::get('/about', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact/submit', [PageController::class, 'submitContact'])->name('submit.contact');
 Route::get('/services/{id}/pricings', [ServiceController::class, 'getPricings'])->name('services.pricings');
 
 
-Route::middleware(['auth', 'check_status'])->group(function() {
-    
+Route::middleware(['auth', 'check_status'])->group(function () {
+
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
     Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
@@ -54,7 +56,6 @@ Route::middleware(['auth', 'check_status'])->group(function() {
     Route::post('/deposit', [ProfileController::class, 'deposit'])->name('payment.deposit');
     Route::get('/deposit/complete', [ProfileController::class, 'depositComplete'])->name('payment.deposit.complete');
     Route::get('/profile/payment-history', [ProfileController::class, 'depositHistory'])->name('profile.payment_history');
-
 });
 
 Route::middleware(['auth', 'admin', 'check_status'])->group(function () {
@@ -73,5 +74,7 @@ Route::middleware(['auth', 'admin', 'check_status'])->group(function () {
         Route::get('/order-detail/{id}', [AdminOrderController::class, 'orderDetail'])->name('orderDetail');
         Route::post('/orders/{id}/cancel', [AdminOrderController::class, 'cancel'])->name('orders.cancel');
 
+        Route::get('/contacts', [AdminContactController::class, 'index'])->name('admin.contacts.index');
+        Route::get('/contacts/{id}', [AdminContactController::class, 'show'])->name('admin.contacts.show');
     });
 });

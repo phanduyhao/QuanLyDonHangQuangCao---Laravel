@@ -16,7 +16,7 @@
         "makeMigration": "php artisan migrate",
         "CreateSeeder": " php artisan make:seeder ProductSeeder    ",
         "RunSeeder": "php artisan db:seed --class=ProductSeeder",
-        "makeOnlyMigration": "php artisan migrate --path=database/migrations/2024_10_12_112459_create_settings_table.php",
+        "makeOnlyMigration": "php artisan migrate --path=database/migrations/2025_07_30_223626_create_contacts_table.php",
         "makeFormRequest": "php artisan make:request Menu/CreateFormRequest",
         "list": "php artisan route:list",
         "storage": "php artisan storage:link",
