@@ -21,28 +21,29 @@
 
                         <!-- Tabs điều hướng bằng link -->
                         <ul class="nav nav-tabs mb-3">
+
+                            <li class="nav-item">
+                                <a class="nav-link {{ request('status') == null ? 'active' : '' }}"
+                                    href="{{ route('profile.orders') }}">
+                                    Tất cả
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request('status') === '0' ? 'active' : '' }}"
+                                    href="{{ route('profile.orders', ['status' => 0]) }}">
+                                    Chờ duyệt
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request('status') == 1 ? 'active' : '' }}"
                                     href="{{ route('profile.orders', ['status' => 1]) }}">
-                                    Chờ duyệt
+                                    Đã duyệt
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request('status') == 2 ? 'active' : '' }}"
                                     href="{{ route('profile.orders', ['status' => 2]) }}">
-                                    Đã duyệt
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request('status') == 3 ? 'active' : '' }}"
-                                    href="{{ route('profile.orders', ['status' => 3]) }}">
                                     Đã hủy
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {{ request('status') == null ? 'active' : '' }}"
-                                    href="{{ route('profile.orders') }}">
-                                    Tất cả
                                 </a>
                             </li>
                         </ul>
@@ -82,6 +83,15 @@
                                                         data-id="{{ $order->id }}">
                                                         Chi tiết
                                                     </button>
+                                                    @if ($order->status == 0)
+                                                        <form action="{{ route('profile.orders.cancel', $order->id) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng này?')"
+                                                            class="d-inline">
+                                                            @csrf
+                                                            <button class="btn btn-danger">Hủy đơn</button>
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -140,6 +150,7 @@
                             return res.json();
                         })
                         .then(order => {
+
                             document.getElementById('orderDetailModalLabel').textContent =
                                 `Chi tiết đơn hàng #${order.order_code}`;
                             contentDiv.innerHTML = `
@@ -150,10 +161,10 @@
                                 <tr><th>Ngày bắt đầu</th><td>${formatDate(order.start_date)}</td></tr>
                                 <tr><th>Ngày kết thúc</th><td>${formatDate(order.end_date)}</td></tr>
                                 <tr><th>Số ngày</th><td>${order.number_of_days}</td></tr>
-                                <tr><th>Tổng reach</th><td>${order.reach_total}</td></tr>
+                                <tr><th>tổng lượt tiếp cận</th><td>${order.reach_total}</td></tr>
                                 <tr><th>Tổng tiền</th><td>${new Intl.NumberFormat().format(order.total_amount)}₫</td></tr>
-                                <tr><th>Trạng thái</th><td class="text-warning">Chờ duyệt</td></tr>
-                                <tr><th>Lý do từ chối</th><td>${order.rejection_reason ?? 'Không có'}</td></tr>
+                                <tr><th>Trạng thái</th><td>${getStatusText(order.status)}</td></tr>
+                                <tr><th>Lý do từ chối</th><td class="text-danger">${order.rejection_reason ?? 'Không có'}</td></tr>
                                 <tr><th>Ngày tạo</th><td>${formatDate(order.created_at)}</td></tr>
                             </table>
                         `;
@@ -162,11 +173,21 @@
                             contentDiv.innerHTML =
                                 `<div class="alert alert-danger">${err.message}</div>`;
                         });
-
                     modal.show();
                 });
             });
         });
+
+function getStatusText(status) {
+    const map = {
+        0: `<span class="text-warning">Chờ duyệt</span>`,
+        1: `<span class="text-success">Đã duyệt</span>`,
+        2: `<span class="text-danger">Đã hủy</span>`,
+    };
+
+    return map[+status] || `<span class="text-muted">Không xác định (${status})</span>`;
+}
+
 
         function formatDate(dateStr) {
             const date = new Date(dateStr);

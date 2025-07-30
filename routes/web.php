@@ -33,28 +33,37 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/services/{id}/pricings', [ServiceController::class, 'getPricings'])->name('services.pricings');
 
 
-Route::middleware(['auth'])->group(function() {
+Route::middleware(['auth', 'check_status'])->group(function() {
     
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
     Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
-    // web.php
     Route::get('payment/{order}', [PaymentController::class, 'payment'])->name('payment.vnpay');
     Route::get("checkout/complete/{orderId}", [PaymentController::class, "complete"])->name("checkout.complete");
+    Route::post('/orders/{order}/pay-by-balance', [OrderController::class, 'payByBalance'])->name('orders.payByBalance');
 
     //profile
     Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::get('/profile/change-password', [ProfileController::class, 'changePasswordForm'])->name('profile.change-password');
-    Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.change-password.submit');
+    Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+    Route::post('/profile/orders/{id}/cancel', [ProfileController::class, 'cancel'])->name('profile.orders.cancel');
+
+    // Nạp tiền
+    Route::post('/deposit', [ProfileController::class, 'deposit'])->name('payment.deposit');
+    Route::get('/deposit/complete', [ProfileController::class, 'depositComplete'])->name('payment.deposit.complete');
+    Route::get('/profile/payment-history', [ProfileController::class, 'depositHistory'])->name('profile.payment_history');
 
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'admin', 'check_status'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('/', [HomeAdminController::class, 'index'])->name('admin');
         Route::resource('users', AdminUserController::class);
+        Route::patch('/users/{id}/lock', [AdminUserController::class, 'lock'])->name('users.lock');
+        Route::patch('/users/{id}/unlock', [AdminUserController::class, 'unlock'])->name('users.unlock');
+
         Route::resource('services', AdminServiceController::class);
         Route::resource('servicesPricing', AdminServicePricingController::class);
 

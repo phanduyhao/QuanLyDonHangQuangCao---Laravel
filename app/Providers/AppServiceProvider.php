@@ -28,5 +28,12 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('count_order_pending_payment', $count_order_pending_payment);
         });
+         View::composer('layout.sidebar', function ($view) {
+            $count_order_pending = 0;
+            if (Auth::check()) {
+                $count_order_pending= Order::where('user_id', Auth::user()->id)->where('status', Order::STATUS_PENDING)->count();
+            }
+            $view->with('count_order_pending', $count_order_pending);
+        });
     }
 }

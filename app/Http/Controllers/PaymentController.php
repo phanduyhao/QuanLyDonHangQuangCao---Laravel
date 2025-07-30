@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class PaymentController extends Controller
 {
     public function payment(Request $request, Order $order)
-    {   log::info($order);
+    {   
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('checkout.complete', [

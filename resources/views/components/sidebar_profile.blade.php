@@ -64,7 +64,7 @@
         <h5>{{ Auth::user()->name }}</h5>
         <p>{{ Auth::user()->email }}</p>
         <p>Số dư: {{ number_format(Auth::user()->money) }} VNĐ</p>
-        <div class="d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center border-top pt-3">
             <a href="{{ route('profile.show') }}"
                 class="profile-nav-link {{ Route::currentRouteName() == 'profile.show' ? 'active' : '' }}">
                 <i class="fas fa-user me-2"></i> Thông Tin Cá Nhân
@@ -76,6 +76,10 @@
             <a href="{{ route('profile.change-password') }}"
                 class="profile-nav-link {{ Route::currentRouteName() == 'profile.change-password' ? 'active' : '' }}">
                 <i class="fas fa-lock me-2"></i> Thay Đổi Mật Khẩu
+            </a>
+             <a href="{{ route('profile.payment_history') }}"
+                class="profile-nav-link {{ Route::currentRouteName() == 'profile.payment_history' ? 'active' : '' }}">
+                <i class="fas fa-lock me-2"></i> Lịch sử nạp tiền
             </a>
         </div>
     </div>

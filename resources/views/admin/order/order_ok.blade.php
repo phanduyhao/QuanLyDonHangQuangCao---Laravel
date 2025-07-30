@@ -50,7 +50,7 @@
         </div>
 
         <div class="card">
-            <div class="card-body table-responsive">
+            <div class="card-body px-0 table-responsive">
                 <table class="table table-bordered text-center align-middle">
                     <thead>
                         <tr>
@@ -151,10 +151,9 @@
                                 <tr><th>Ngày bắt đầu</th><td>${formatDate(order.start_date)}</td></tr>
                                 <tr><th>Ngày kết thúc</th><td>${formatDate(order.end_date)}</td></tr>
                                 <tr><th>Số ngày</th><td>${order.number_of_days}</td></tr>
-                                <tr><th>Tổng reach</th><td>${order.reach_total}</td></tr>
+                                <tr><th>tổng lượt tiếp cận</th><td>${order.reach_total}</td></tr>
                                 <tr><th>Tổng tiền</th><td>${new Intl.NumberFormat().format(order.total_amount)}₫</td></tr>
                                 <tr><th>Trạng thái</th><td class="text-success">Đã duyệt</td></tr>
-                                <tr><th>Lý do từ chối</th><td>${order.rejection_reason ?? 'Không có'}</td></tr>
                                 <tr><th>Ngày tạo</th><td>${formatDate(order.created_at)}</td></tr>
                             </table>
                         `;

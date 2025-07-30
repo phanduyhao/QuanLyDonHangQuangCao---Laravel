@@ -97,6 +97,22 @@
                                             data-bs-target="#deleteModal{{ $user->id }}">Xóa</button>
                                         <button type="button" data-id="{{ $user->id }}"
                                             class="btn btn-edit btnEditUser btn-info text-dark px-2 py-1 fw-bolder">Sửa</button>
+                                        @if ($user->status == 'active')
+                                            <button type="button" class="btn btn-warning btnLockAccount px-2 me-2 py-1"
+                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}"
+                                                data-bs-toggle="modal" data-bs-target="#lockModal">
+                                                Khóa
+                                            </button>
+                                        @else
+                                            <form method="POST" action="{{ route('users.unlock', $user->id) }}"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success px-2 me-2 py-1">
+                                                    Kích hoạt
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 @endif
 
@@ -175,6 +191,33 @@
                         </div>
                     </div>
                 </div>
+                <!-- Modal Khóa tài khoản -->
+                <div class="modal fade" id="lockModal" tabindex="-1" aria-labelledby="lockModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form method="POST" id="form-lock-user">
+                            @csrf
+                            @method('PATCH')
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger">Khóa tài khoản</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Bạn có chắc muốn khóa tài khoản <strong id="lock-user-name"></strong> không?</p>
+                                    <div class="mb-3">
+                                        <label for="reason" class="form-label">Lý do khóa</label>
+                                        <textarea name="reason" class="form-control" id="lock-reason" rows="3" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-danger">Xác nhận</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <div class="pagination mt-4 pb-4">
                     {{ $users->links() }}
                 </div>
@@ -203,7 +246,7 @@
                         $('#' + IdEditUser + ' #password-edit').val('');
                         $('#' + IdEditUser + ' #role-edit').val(response.role);
                         const statusValue = response.active === 'active' ? 'active' :
-                        'inactive';
+                            'inactive';
 
                         $('#' + IdEditUser + ' #status_user').val(statusValue);
 
@@ -216,6 +259,15 @@
                     }
                 });
             });
+
+            $('.btnLockAccount').on('click', function() {
+                const userId = $(this).data('id');
+                const userName = $(this).data('name');
+                $('#lock-user-name').text(userName);
+                $('#form-lock-user').attr('action', `/admin/users/${userId}/lock`);
+                $('#lock-reason').val('');
+            });
+
 
         });
     </script>

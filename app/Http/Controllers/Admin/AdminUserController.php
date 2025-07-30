@@ -18,17 +18,17 @@ class AdminUserController extends Controller
     public function index(Request $request)
     {
         $query = User::query();
-    
+
         // Tìm kiếm theo ID
         if ($request->input('search_id')) {
             $query->where('id', $request->input('search_id'));
         }
-    
+
         // Tìm kiếm theo tên
         if ($request->input('search_name')) {
             $query->where('name', 'LIKE', '%' . $request->input('search_name') . '%');
         }
-    
+
         // Tìm kiếm theo email
         if ($request->input('search_email')) {
             $query->where('email', 'LIKE', '%' . $request->input('search_email') . '%');
@@ -43,7 +43,7 @@ class AdminUserController extends Controller
         }
         $users = $query->orderByDesc('id')->paginate(10);
 
-        return view('admin.user.index',compact('users'),[
+        return view('admin.user.index', compact('users'), [
             'title' => 'Quản lý người dùng',
         ]);
     }
@@ -58,10 +58,10 @@ class AdminUserController extends Controller
         if (!$user) {
             return response()->json([
                 'message' => 'Không tìm thấy người dùng với ID: ' . $id
-            ], 404); 
+            ], 404);
         }
 
-        return response()->json($user); 
+        return response()->json($user);
     }
 
     /**
@@ -108,12 +108,32 @@ class AdminUserController extends Controller
 
         if (!$user) {
             return response()->json([
-               'message' => 'Không tìm thấy người dùng với ID: '. $id
-            ], 404); 
+                'message' => 'Không tìm thấy người dùng với ID: ' . $id
+            ], 404);
         }
         $user->delete();
         return response()->json([
-           'message' => 'Đã xóa người dùng ID: '. $id
+            'message' => 'Đã xóa người dùng ID: ' . $id
         ], 200);
+    }
+
+    public function lock(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 'inactive';
+        $user->reason_inactive = $request->reason;
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'Tài khoản đã bị khóa');
+    }
+
+    public function unlock($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 'active';
+        $user->reason_inactive = null;
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'Tài khoản đã được kích hoạt');
     }
 }

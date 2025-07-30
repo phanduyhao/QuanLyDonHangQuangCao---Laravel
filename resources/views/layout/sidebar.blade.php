@@ -18,56 +18,64 @@
          <!-- Dashboard -->
          <li class="menu-item">
              <a href="{{ route('admin') }}" class="menu-link">
-                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                 <div data-i18n="Analytics">Trang quản trị</div>
+                 <i class="menu-icon tf-icons bx bx-home"></i>
+                 <div>Trang quản trị</div>
              </a>
          </li>
          <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Người dùng &amp; Khách hàng</span>
-        </li>
-         <li class="menu-item active">
-            <a href="{{ route('users.index') }}" class="menu-link ">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="Layouts">Quản lý người dùng</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Dịch vụ && Đơn hàng</span>
-        </li>
-         <li class="menu-item active">
-            <a href="{{ route('services.index') }}" class="menu-link ">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="Layouts">Quản lý dịch vụ</div>
-            </a>
-        </li>
-         <li class="menu-item active">
-            <a href="{{ route('servicesPricing.index') }}" class="menu-link ">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="Layouts">Quản lý bảng giá</div>
-            </a>
-        </li>
-        <li class="menu-item open" style="">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bxs-user-account"></i>
-                <div data-i18n="Layouts">Quản lý đơn hàng</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ route('orderOk') }}" class="menu-link">
-                        <div data-i18n="Without menu">Đơn hàng đã duyệt</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('orderPending') }}" class="menu-link">
-                        <div data-i18n="Without menu">Đơn hàng chờ duyệt</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('orderCancel') }}" class="menu-link">
-                        <div data-i18n="Without menu">Đơn hàng đã hủy</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+             <span class="menu-header-text">Người dùng &amp; Khách hàng</span>
+         </li>
+         <li class="menu-item">
+             <a href="{{ route('users.index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bxs-user-detail"></i>
+                 <div>Quản lý người dùng</div>
+             </a>
+         </li>
+         <li class="menu-header small text-uppercase">
+             <span class="menu-header-text">Dịch vụ && Đơn hàng</span>
+         </li>
+         <li class="menu-item">
+             <a href="{{ route('services.index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bxs-briefcase-alt-2"></i>
+                 <div>Quản lý dịch vụ</div>
+             </a>
+         </li>
+
+         <li class="menu-item">
+             <a href="{{ route('servicesPricing.index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bxs-spreadsheet"></i>
+                 <div>Quản lý bảng giá</div>
+             </a>
+         </li>
+
+         <li class="menu-item open">
+             <a href="javascript:void(0);" class="menu-link menu-toggle">
+                 <i class="menu-icon tf-icons bx bxs-shopping-bag-alt"></i>
+                 <div>Quản lý đơn hàng</div>
+                 <p class="badge bg-danger mb-0 ms-2">{{ $count_order_pending }}</p>
+             </a>
+             <ul class="menu-sub">
+                 <li class="menu-item">
+                     <a href="{{ route('orderOk') }}" class="menu-link">
+                         <i class="bx bxs-check-circle me-2"></i>
+                         <div>Đơn hàng đã duyệt</div>
+                     </a>
+                 </li>
+                 <li class="menu-item">
+                     <a href="{{ route('orderPending') }}" class="menu-link">
+                         <i class="bx bxs-hourglass me-2"></i>
+                         <div>Đơn hàng chờ duyệt</div>
+                         <p class="badge bg-danger mb-0 ms-2">{{ $count_order_pending }}</p>
+                     </a>
+                 </li>
+                 <li class="menu-item">
+                     <a href="{{ route('orderCancel') }}" class="menu-link">
+                         <i class="bx bxs-x-circle me-2"></i>
+                         <div>Đơn hàng đã hủy</div>
+                     </a>
+                 </li>
+             </ul>
+         </li>
+
      </ul>
  </aside>

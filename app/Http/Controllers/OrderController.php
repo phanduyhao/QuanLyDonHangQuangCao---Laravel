@@ -73,4 +73,24 @@ class OrderController extends Controller
 
         return redirect()->route('orders.checkout')->with('success', 'Đơn hàng đã được xoá thành công.');
     }
+
+    public function payByBalance(Order $order)
+{
+    $user = Auth::user();
+
+    if ($user->money < $order->total_amount) {
+        return redirect()->back()->with('error', 'Số dư không đủ để thanh toán.');
+    }
+
+    // Trừ tiền người dùng
+    $user->money -= $order->total_amount;
+    $user->save();
+
+    // Cập nhật trạng thái đơn hàng
+    $order->status = Order::STATUS_PENDING;
+    $order->save();
+
+    return redirect()->route('profile.orders')->with('success', 'Thanh toán bằng số dư thành công.');
+}
+
 }
