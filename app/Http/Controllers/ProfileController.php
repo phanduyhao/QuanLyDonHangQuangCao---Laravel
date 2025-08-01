@@ -155,8 +155,8 @@ class ProfileController extends Controller
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('payment.deposit.complete');
-        $vnp_TmnCode = "17AY5EOG";
-        $vnp_HashSecret = "1GJ1Z7RJW93EQMSV7NANEDLF8TXUBSKX";
+        $vnp_TmnCode = "OKGS5CXM";
+        $vnp_HashSecret = "248XXFTLPU48PYC1UDQT41TXA2LPV3SV";
 
         $vnp_TxnRef = 'TOPUP' . Auth::id() . time();
         $vnp_OrderInfo = "Nạp tiền vào tài khoản";

@@ -51,6 +51,7 @@ Route::middleware(['auth', 'check_status'])->group(function () {
     Route::post('/profile/change-password', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
     Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
     Route::post('/profile/orders/{id}/cancel', [ProfileController::class, 'cancel'])->name('profile.orders.cancel');
+    Route::get('/order-detail/{id}', [AdminOrderController::class, 'orderDetail']);
 
     // Nạp tiền
     Route::post('/deposit', [ProfileController::class, 'deposit'])->name('payment.deposit');

@@ -113,7 +113,7 @@
         @endif
     </div>
     <script>
-        const userBalance = {{ Auth::user()->money }};
+        const userBalance = {{ Auth::user()->money ?? 0 }};
 
         function openPaymentModal(orderId, totalAmount) {
             const modalBody = document.getElementById('paymentModalBody');

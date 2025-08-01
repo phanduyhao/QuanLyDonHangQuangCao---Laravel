@@ -144,7 +144,7 @@
                     </div>
                 </div>`;
 
-                    fetch(`/admin/order-detail/${orderId}`)
+                    fetch(`/order-detail/${orderId}`)
                         .then(res => {
                             if (!res.ok) throw new Error('Không tìm thấy đơn hàng!');
                             return res.json();

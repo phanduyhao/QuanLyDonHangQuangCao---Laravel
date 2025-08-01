@@ -11,15 +11,15 @@ use Illuminate\Support\Facades\Auth;
 class PaymentController extends Controller
 {
     public function payment(Request $request, Order $order)
-    {   
+    {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('checkout.complete', [
             'orderId' => $order->id,
             'amount_money' => $order->total
-        ]);        
-        $vnp_TmnCode = "17AY5EOG";
-        $vnp_HashSecret = "1GJ1Z7RJW93EQMSV7NANEDLF8TXUBSKX";
+        ]);
+        $vnp_TmnCode = "OKGS5CXM";
+        $vnp_HashSecret = "248XXFTLPU48PYC1UDQT41TXA2LPV3SV";
 
         $vnp_TxnRef = 'ORD' . $order->id . time(); // Mã giao dịch
         $vnp_OrderInfo = "Thanh toán đơn hàng #" . $order->id;

@@ -71,7 +71,7 @@ class AuthController extends Controller
         return redirect('/'); // Điều hướng sau khi đăng ký
     }
 
-    
+
     public function showLogin(){
         return view('auth.login',[
             'title' => 'Đăng nhập'
@@ -82,10 +82,10 @@ class AuthController extends Controller
      * Đăng nhập.
      * @param Request $request
      */
-   
+
     public function login(Request $request)
     {
-        // Validate trường login và password
+        // Validate đầu vào
         $this->validate($request, [
             'login' => 'required|string',
             'password' => 'required|string',
@@ -95,33 +95,39 @@ class AuthController extends Controller
         ]);
 
         $login = $request->input('login');
-    $password = $request->input('password');
+        $password = $request->input('password');
 
-        // Xác định kiểu login: email, số điện thoại hay username
+        // Xác định kiểu login
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
             $fieldType = 'email';
         } elseif (preg_match('/^[0-9]{9,15}$/', $login)) {
-            $fieldType = 'phone'; // Số điện thoại
+            $fieldType = 'phone'; // Đảm bảo cột 'phone' tồn tại trong DB
         } else {
-            $fieldType = 'username'; // Mặc định là username
+            return back()->withErrors([
+                'login' => 'Thông tin đăng nhập không hợp lệ. Vui lòng dùng email hoặc số điện thoại.',
+            ])->withInput($request->only('login'));
         }
 
-        // Dữ liệu cần kiểm tra
-        $credentials = [
-            $fieldType => $login,
-            'password' => $password
-        ];
 
-        // Tiến hành đăng nhập
-        if (Auth::attempt($credentials)) {
+        // Kiểm tra xem tài khoản có tồn tại không
+        $user = User::where($fieldType, $login)->first();
+        if (!$user) {
+            return back()->withErrors([
+                'login' => 'Tài khoản không tồn tại',
+            ])->withInput($request->only('login'));
+        }
+
+        // Thử đăng nhập
+        if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
             return redirect()->intended('/')->with('success', 'Đăng nhập thành công');
         }
 
-        // Nếu thất bại
+        // Mật khẩu sai
         return back()->withErrors([
-            'login' => 'Số điện thoại hoặc tên đăng nhập hoặc mật khẩu không đúng',
+            'login' => 'Sai mật khẩu',
         ])->withInput($request->only('login'));
     }
+
 
 
      public function showForgotPass(){
@@ -137,22 +143,22 @@ class AuthController extends Controller
             'email.required' => 'Vui lòng nhập email !',
             'email.exists' => 'Email không tồn tại !',
         ]);
-    
+
         $token = Str::random(64);
-    
+
         // Lưu token vào bảng password_resets
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
             'created_at' => now()
         ]);
-    
+
         // Gửi email
         Mail::send('auth.emailResetPassword', ['token' => $token], function($message) use ($request) {
             $message->to($request->email);
             $message->subject('Đặt lại mật khẩu');
         });
-    
+
         return back()->with('success', 'Email đặt lại mật khẩu đã được gửi.');
     }
 
@@ -165,29 +171,29 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
             'token' => 'required'
         ]);
-    
+
         // Tìm email từ token
         $reset = DB::table('password_resets')->where('token', $request->token)->first();
-    
+
         if (!$reset) {
             return back()->withErrors(['token' => 'Token không hợp lệ hoặc đã hết hạn.']);
         }
-    
+
         // Cập nhật mật khẩu
         $user = \App\Models\User::where('email', $reset->email)->first();
         if (!$user) {
             return back()->withErrors(['email' => 'Không tìm thấy người dùng với email này.']);
         }
-    
+
         $user->password = bcrypt($request->password);
         $user->save();
-    
+
         // Xóa token sau khi sử dụng
         DB::table('password_resets')->where(['email' => $reset->email])->delete();
-    
+
         return redirect()->route('login')->with('success', 'Mật khẩu của bạn đã được đặt lại thành công.');
     }
-    
+
 
     /**
      * Đăng xuất.
@@ -195,6 +201,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('showLogin');    
+        return redirect()->route('showLogin');
     }
 }
