@@ -76,5 +76,8 @@ Route::middleware(['auth', 'admin', 'check_status'])->group(function () {
 
         Route::get('/contacts', [AdminContactController::class, 'index'])->name('admin.contacts.index');
         Route::get('/contacts/{id}', [AdminContactController::class, 'show'])->name('admin.contacts.show');
+
+        Route::get('/pdf', [HomeAdminController::class, 'exportPDF'])->name('admin.report.pdf');
+        Route::get('/excel', [HomeAdminController::class, 'exportExcel'])->name('admin.report.excel');
     });
 });

@@ -18,10 +18,10 @@
                 </div>
             </div>
         </div>
-        <div class="row g-4">
+        <div class="row g-4 mt-3">
             <!-- Thông tin liên hệ -->
             <div class="col-md-5">
-                <div class="bg-white p-4 rounded shadow-sm h-100">
+                <div class=" p-4 rounded shadow-sm h-100" style="background: antiquewhite">
                     <h5 class="mb-3 text-dark">Thông tin công ty</h5>
                     <p><i class="bx bx-map me-2"></i><strong>Địa chỉ:</strong><br>
                         Số 0627A tổ 33, ấp Thuận Tiến A, Xã Thuận An, TX Bình Minh, Vĩnh Long
@@ -62,7 +62,7 @@
                         </ul>
                     </div>
                 @endif
-                <div class="bg-white p-4 rounded shadow-sm h-100">
+                <div class=" p-4 rounded shadow-sm h-100" style="background: antiquewhite">
                     <h5 class="mb-3 text-dark">Gửi tin nhắn cho chúng tôi</h5>
                     <form action="{{ route('submit.contact') }}" method="POST">
                         @csrf

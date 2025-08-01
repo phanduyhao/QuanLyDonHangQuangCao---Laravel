@@ -5,7 +5,14 @@
         <h4 class="fw-bold py-3 mb-4">
             <span class="text-muted fw-light">Trang quản trị /</span> {{ $title }}
         </h4>
-
+        <div>
+            <a href="{{ route('admin.report.pdf') }}" class="btn btn-danger me-2">
+                <i class="fas fa-file-pdf"></i> Xuất PDF
+            </a>
+            <a href="{{ route('admin.report.excel') }}" class="btn btn-success">
+                <i class="fas fa-file-excel"></i> Xuất Excel
+            </a>
+        </div>
         <div class="row">
             {{-- Doanh thu hôm nay --}}
             <div class="col-lg-3 col-md-6 col-12 mb-4">
@@ -84,7 +91,7 @@
                 <div class="card border">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
-                            <span class="fw-semibold d-block mb-1 fs-6">⏳ Đơn  Chờ duyệt</span>
+                            <span class="fw-semibold d-block mb-1 fs-6">⏳ Đơn Chờ duyệt</span>
                         </div>
                         <h4 class="mb-0 text-warning">{{ $pendingOrders }}</h4>
                     </div>
@@ -96,7 +103,7 @@
                 <div class="card border">
                     <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
-                            <span class="fw-semibold d-block mb-1 fs-6">❌ Đơn  Đã huỷ</span>
+                            <span class="fw-semibold d-block mb-1 fs-6">❌ Đơn Đã huỷ</span>
                         </div>
                         <h4 class="mb-0 text-danger">{{ $rejectedOrders }}</h4>
                     </div>

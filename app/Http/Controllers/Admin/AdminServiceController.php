@@ -65,7 +65,7 @@ public function store(Request $request)
     $this->validate($request, [
         'service_name' => 'required|unique:services',
         'description' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:3000',
+        'image' => 'nullable|image|max:3000',
         // 'pricing_model' => 'required|string',
         // 'package_price' => 'nullable|numeric|min:0',
         // 'package_duration_days' => 'nullable|integer|min:1',
@@ -88,7 +88,6 @@ public function store(Request $request)
         
         // Thông báo lỗi cho trường file
         'image.image' => 'File tải lên phải là một ảnh.',
-        'image.mimes' => 'Định dạng ảnh phải là jpeg, png, jpg, hoặc gif.',
         'image.max' => 'Kích thước ảnh không được vượt quá 3MB.',
     ]);
 
