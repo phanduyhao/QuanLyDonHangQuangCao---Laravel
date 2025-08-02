@@ -100,7 +100,7 @@ class PaymentController extends Controller
                 'title' => 'Thanh toán thành công!'
             ]);
         } else {
-            $order->status = Order::PAYMENT_FAILED;
+            $order->status = Order::PAYMENT_STATUS_PENDING;
             $order->save();
 
             $payment?->update([
@@ -111,7 +111,7 @@ class PaymentController extends Controller
                 'BankCode' => $request->query('vnp_BankCode')
             ]);
 
-            return redirect()->route('checkout')->with('error', 'Thanh toán không thành công!');
+            return redirect()->route('home')->with('error', 'Thanh toán không thành công!');
         }
     }
 
