@@ -19,7 +19,7 @@
                         <h5 class="card-title">
                             <i class="fas fa-id-card me-2"></i>Thông Tin Cá Nhân
                         </h5>
-                        <form class="row" action="{{ route('profile.update') }}" method="POST"
+                        <form class="row" action="{{ route('profile.update') }}" method="POST" id="profileForm"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -37,17 +37,17 @@
                             <div class="col-md-8">
                                 <div class="mb-3">
                                     <label class="form-label">Tên</label>
-                                    <input type="text" class="form-control" name="name"
-                                        value="{{ old('name', Auth::user()->name) }}">
+                                    <input type="text" class="form-control input-field" name="name" required
+                                        value="{{ old('name', Auth::user()->name) }}"  data-require='Mời nhập họ tên'>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
-                                    <input type="email" class="form-control" name="email"
-                                        value="{{ old('email', Auth::user()->email) }}">
+                                    <input type="email" class="form-control input-field" name="email" required
+                                        value="{{ old('email', Auth::user()->email) }}" data-require='Mời nhập Email'>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" name="phone"
+                                    <input type="text" class="form-control input-field" name="phone" required data-require='Mời nhập SĐT'
                                         value="{{ old('phone', Auth::user()->phone) }}">
                                 </div>
                                 <div class="mb-3">

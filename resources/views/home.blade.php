@@ -17,33 +17,33 @@
             border: 2px solid #c5c5c5 !important;
         }
     </style>
-    
-  <div id="heroBanner" class="container carousel slide mt-3" data-bs-ride="carousel">
-      <div class="carousel-inner">
-          <div class="carousel-item active">
-              <img src="/images/banner/banner1.jpg" class="d-block w-100 img-banner" alt="Banner 1">
-          </div>
-          <div class="carousel-item">
-              <img src="/images/banner/banner2.jpg" class="d-block w-100 img-banner" alt="Banner 2">
-          </div>
-          <div class="carousel-item">
-              <img src="/images/banner/banner3.jpg" class="d-block w-100 img-banner" alt="Banner 3">
-          </div>
-          <div class="carousel-item">
-              <img src="/images/banner/banner4.png" class="d-block w-100 img-banner" alt="Banner 4">
-          </div>
-      </div>
 
-      <!-- Điều hướng trái/phải -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#heroBanner" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-          <span class="visually-hidden">Trước</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#heroBanner" data-bs-slide="next">
-          <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-          <span class="visually-hidden">Tiếp</span>
-      </button>
-  </div>
+    <div id="heroBanner" class="container carousel slide mt-3" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/images/banner/banner1.jpg" class="d-block w-100 img-banner" alt="Banner 1">
+            </div>
+            <div class="carousel-item">
+                <img src="/images/banner/banner2.jpg" class="d-block w-100 img-banner" alt="Banner 2">
+            </div>
+            <div class="carousel-item">
+                <img src="/images/banner/banner3.jpg" class="d-block w-100 img-banner" alt="Banner 3">
+            </div>
+            <div class="carousel-item">
+                <img src="/images/banner/banner4.png" class="d-block w-100 img-banner" alt="Banner 4">
+            </div>
+        </div>
+
+        <!-- Điều hướng trái/phải -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroBanner" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+            <span class="visually-hidden">Trước</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroBanner" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+            <span class="visually-hidden">Tiếp</span>
+        </button>
+    </div>
 
     <div class="content-wrapper py-4 px-3 rounded">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -134,7 +134,7 @@
                                     <input type="date" class="form-control" id="endDate" name="end_date" required>
                                 </div>
                             </div>
-<input type="hidden" name="reach_total" id="reachTotal">
+                            <input type="hidden" name="reach_total" id="reachTotal">
                         </div>
 
                     </form>
@@ -311,6 +311,56 @@
                         });
                 });
             });
+
+            const orderServiceModal = document.getElementById('orderServiceModal');
+            const orderForm = document.getElementById('orderForm');
+
+            orderServiceModal.addEventListener('show.bs.modal', function(event) {
+                // Reset form khi mở modal mới
+                orderForm.reset();
+
+                // Reset các hidden field và summary box
+                document.getElementById('selectedServiceId').value = '';
+                document.getElementById('reachTotal').value = '';
+
+                document.getElementById('summaryPackageName').textContent = '';
+                document.getElementById('summaryDuration').textContent = '';
+                document.getElementById('summaryPrice').textContent = '';
+                document.getElementById('summaryReach').textContent = '';
+                document.getElementById('totalReach').textContent = '';
+                document.getElementById('summaryDateRange').textContent = '';
+
+                // Lấy thông tin từ button
+                const button = event.relatedTarget;
+                const serviceID = button.getAttribute('data-service-id');
+                const serviceName = button.getAttribute('data-service-name');
+                document.getElementById('selectedServiceId').value = serviceID;
+                document.getElementById('orderServiceModalLabel').textContent = 'Dịch vụ: ' + serviceName;
+
+                // Reset select option
+                const packageSelect = document.getElementById('packageSelect');
+                while (packageSelect.options.length > 1) {
+                    packageSelect.remove(1);
+                }
+
+                // Load gói dịch vụ mới
+                fetch(`/services/${serviceID}/pricings`)
+                    .then(response => response.json())
+                    .then(pricings => {
+                        pricings.forEach(pricing => {
+                            const option = document.createElement('option');
+                            option.value = pricing.id;
+                            option.textContent =
+                                `★ ${pricing.title} » ${pricing.price.toLocaleString('vi-VN')} VNĐ (${pricing.duration_days ? pricing.duration_days + ' ngày' : 'Số ngày bất kì'} - ${pricing.impressions_per_day}/ngày)`;
+                            option.dataset.duration = pricing.duration_days;
+                            option.dataset.price = pricing.price;
+                            option.dataset.reach = pricing.impressions_per_day;
+                            packageSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching pricings:', error));
+            });
+
         });
     </script>
 @endsection
