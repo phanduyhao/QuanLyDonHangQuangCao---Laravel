@@ -74,6 +74,7 @@ Route::middleware(['auth', 'admin', 'check_status'])->group(function () {
         Route::get('/order-cancel', [AdminOrderController::class, 'orderCancel'])->name('orderCancel');
         Route::get('/order-detail/{id}', [AdminOrderController::class, 'orderDetail'])->name('orderDetail');
         Route::post('/orders/{id}/cancel', [AdminOrderController::class, 'cancel'])->name('orders.cancel');
+        Route::post('/orders/{id}/approve', [AdminOrderController::class, 'approve'])->name('orders.approve');
 
         Route::get('/contacts', [AdminContactController::class, 'index'])->name('admin.contacts.index');
         Route::get('/contacts/{id}', [AdminContactController::class, 'show'])->name('admin.contacts.show');

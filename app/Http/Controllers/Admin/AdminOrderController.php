@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCancelledMail;
+
 class AdminOrderController extends Controller
 {
     public function orderOk(Request $request)
@@ -51,7 +52,7 @@ class AdminOrderController extends Controller
 
     public function OrderPending(Request $request)
     {
-         $query = Order::where('status', Order::STATUS_PENDING);
+        $query = Order::where('status', Order::STATUS_PENDING);
 
         // Tìm theo mã đơn hàng
         if ($request->filled('search_code')) {
@@ -88,7 +89,7 @@ class AdminOrderController extends Controller
     }
     public function OrderCancel(Request $request)
     {
-         $query = Order::where('status', Order::STATUS_CANCEL);
+        $query = Order::where('status', Order::STATUS_CANCEL);
 
         // Tìm theo mã đơn hàng
         if ($request->filled('search_code')) {
@@ -151,5 +152,15 @@ class AdminOrderController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    public function approve($id)
+    {
+        $order = Order::with('user')->findOrFail($id);
+
+        $order->status = Order::STATUS_OK;
+        $order->save();
+        return redirect()->route('orderOk')
+            ->with('success', 'Đơn hàng đã được duyệt thành công!');
     }
 }

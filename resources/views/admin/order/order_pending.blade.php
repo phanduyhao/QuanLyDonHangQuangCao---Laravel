@@ -82,9 +82,9 @@
                                         data-id="{{ $order->id }}">
                                         Chi tiết
                                     </button>
-                                    <form class="mt-2" action="" action="">
+                                    <form class="mt-2" action="{{ route('orders.approve', $order->id) }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="btn btn-success text-dark fw-bold btn-order-detail">
+                                        <button type="submit" class="btn btn-success text-dark fw-bold btn-order-ok"">
                                             Duyệt đơn
                                         </button>
                                     </form>
@@ -218,45 +218,44 @@
         }
     </script>
     <script>
-$(document).ready(function () {
-    $('.btn-order-cancel').on('click', function () {
-        const orderId = $(this).data('id');
-        const orderCode = $(this).data('code');
+        $(document).ready(function() {
+            $('.btn-order-cancel').on('click', function() {
+                const orderId = $(this).data('id');
+                const orderCode = $(this).data('code');
 
-        // Gán dữ liệu vào modal
-        $('#cancel_order_id').val(orderId);
-        $('#cancel_order_code').text(orderCode);
-        $('#rejection_reason').val('');
+                // Gán dữ liệu vào modal
+                $('#cancel_order_id').val(orderId);
+                $('#cancel_order_code').text(orderCode);
+                $('#rejection_reason').val('');
 
-        // Mở modal
-        $('#cancelOrderModal').modal('show');
-    });
+                // Mở modal
+                $('#cancelOrderModal').modal('show');
+            });
 
-    // Xử lý submit form nếu cần gửi về backend
-    $('#cancel-order-form').on('submit', function (e) {
-        // Có thể bỏ qua nếu đã dùng action/form route trong <form>
-        e.preventDefault();
-        const orderId = $('#cancel_order_id').val();
-        const reason = $('#rejection_reason').val();
+            // Xử lý submit form nếu cần gửi về backend
+            $('#cancel-order-form').on('submit', function(e) {
+                // Có thể bỏ qua nếu đã dùng action/form route trong <form>
+                e.preventDefault();
+                const orderId = $('#cancel_order_id').val();
+                const reason = $('#rejection_reason').val();
 
-        $.ajax({
-            url: `/admin/orders/${orderId}/cancel`, // ví dụ
-            method: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}',
-                rejection_reason: reason
-            },
-            success: function (res) {
-                alert('Đã hủy đơn thành công!');
-                $('#cancelOrderModal').modal('hide');
-                location.reload();
-            },
-            error: function (err) {
-                alert('Hủy đơn thất bại.');
-            }
+                $.ajax({
+                    url: `/admin/orders/${orderId}/cancel`, // ví dụ
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        rejection_reason: reason
+                    },
+                    success: function(res) {
+                        alert('Đã hủy đơn thành công!');
+                        $('#cancelOrderModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(err) {
+                        alert('Hủy đơn thất bại.');
+                    }
+                });
+            });
         });
-    });
-});
-</script>
-
+    </script>
 @endsection
