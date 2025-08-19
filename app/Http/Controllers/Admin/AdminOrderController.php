@@ -7,6 +7,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderCancelledMail;
+use App\Mail\OrderAprroveMail;
 
 class AdminOrderController extends Controller
 {
@@ -160,6 +161,9 @@ class AdminOrderController extends Controller
 
         $order->status = Order::STATUS_OK;
         $order->save();
+        if ($order->user && $order->user->email) {
+            Mail::to($order->user->email)->send(new OrderAprroveMail($order));
+        }
         return redirect()->route('orderOk')
             ->with('success', 'Đơn hàng đã được duyệt thành công!');
     }
